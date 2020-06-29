@@ -87,6 +87,11 @@
 			{
 				"command": "docs.seoPreview",
 				"title": "Docs: Search Results Preview"
+			},
+			{
+				"command": "sendAnnouncement",
+				"title": "Send Announcement",
+				"category": "Docs"
 			}
 		],
 		"menus": {
@@ -102,6 +107,10 @@
 				{
 					"when": "resourceLangId == markdown || resourceLangId == yaml",
 					"command": "docs.seoPreview"
+				},
+				{
+					"command": "sendAnnouncement",
+					"group": "Docs"
 				}
 			]
 		}
@@ -133,6 +142,9 @@
 		"@typescript-eslint/eslint-plugin": "^2.34.0",
 		"@typescript-eslint/eslint-plugin-tslint": "^2.34.0",
 		"@typescript-eslint/parser": "^2.34.0",
+		"@types/nodemailer": "^6.4.0",
+		"@types/nodemailer-direct-transport": "^1.0.31",
+		"@types/nodemailer-smtp-transport": "^2.7.4",
 		"chai": "^4.2.0",
 		"chai-spies": "^1.0.0",
 		"eslint": "^7.0.0",
@@ -142,6 +154,7 @@
 		"markdown-it": "^8.4.2",
 		"mocha": "^7.1.1",
 		"mocha-junit-reporter": "^1.23.3",
+		"nodemailer": "^6.4.10",
 		"nyc": "^15.0.0",
 		"prettier": "^2.0.5",
 		"pretty-quick": "^2.0.1",
