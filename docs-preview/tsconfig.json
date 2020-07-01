@@ -8,5 +8,5 @@
 		"rootDir": "."
 	},
 	"exclude": ["node_modules", ".vscode-test"],
-	"include": [".eslintrc.js", "src/**/*"]
+	"include": [".eslintrc.js", "src/**/*", "JavaScriptSPA"]
 }
