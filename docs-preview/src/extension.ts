@@ -29,32 +29,7 @@ const reloadMessage =
 	'Your updated configuration has been recorded, but you must reload to see its effects.';
 
 export async function activate(context: ExtensionContext) {
-	const express = require('express');
-	const morgan = require('morgan');
-	const path = require('path');
-
 	extensionPath = context.extensionPath;
-
-	//initialize express.
-	const app = express();
-
-	// Initialize variables.
-	const port = 3000; // process.env.PORT || 3000;
-
-	// Configure morgan module to log all requests.
-	app.use(morgan('dev'));
-
-	// Set the front-end folder to serve public assets.
-	app.use(express.static('JavaScriptSPA'));
-
-	// Set up a route for index.html.
-	app.get('*', function (req, res) {
-		res.sendFile(path.join(extensionPath, 'JavaScriptSPA/index.html'));
-	});
-
-	// Start the server.
-	app.listen(port);
-	console.log('Listening on port ' + port + '...');
 
 	// Creates an array of commands from each command file.
 	const ControllerCommands: any = [];

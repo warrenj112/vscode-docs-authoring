@@ -48,6 +48,10 @@ export function markdownQuickPick(context: ExtensionContext) {
 			description: '',
 			label: '$(search) Search Results Preview'
 		});
+		markdownItems.push({
+			description: '',
+			label: '$(mail) Send as email'
+		});
 	}
 
 	markdownItems.push(

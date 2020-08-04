@@ -51,6 +51,12 @@
 					],
 					"default": "Light",
 					"description": "Preview will be displayed in light theme."
+				},
+				"preview.defaultEmailAddress": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "The default email address used by the mailer command.",
+					"scope": "window"
 				}
 			}
 		},
@@ -117,8 +123,8 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
-		"webpack": "webpack --mode development && node server.js",
-		"webpack-dev": "webpack --mode development --watch && node server.js",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
