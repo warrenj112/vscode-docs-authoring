@@ -132,9 +132,7 @@
 		"prettier-check": "prettier --check \"**/*.{ts,js,json,yml}\" --loglevel debug",
 		"pretest": "npm run compile",
 		"test": "node ./out/src/test/runTest.js",
-		"lint": "eslint . --ext .ts",
-		"start": "node server.js",
-		"dev": "nodemon server.js"
+		"lint": "eslint . --ext .ts"
 	},
 	"husky": {
 		"hooks": {
@@ -184,11 +182,10 @@
 		"glob": "^7.1.6",
 		"js-base64": "^2.5.1",
 		"js-yaml": "^3.13.1",
+		"markdown-it-front-matter": "^0.2.1",
 		"markdown-it-include": "^1.1.0",
 		"moment": "^2.24.0",
 		"os": "^0.1.1",
-		"vscode-extension-telemetry": "^0.1.1",
-		"express": "^4.12.3",
-		"morgan": "^1.5.2"
+		"vscode-extension-telemetry": "^0.1.1"
 	}
 }
