@@ -1,6 +1,13 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { ConfigurationTarget, window, workspace } from 'vscode';
+import {
+	authentication,
+	AuthenticationSession,
+	ConfigurationTarget,
+	window,
+	workspace
+} from 'vscode';
 import { output } from '../extension';
 import { column_end, columnEndOptions, columnOptions } from '../markdown-extensions/column';
 import { container_plugin } from '../markdown-extensions/container';
@@ -19,6 +26,7 @@ export let emailRecipients: any;
 export let emailSubject: string;
 export let password: string;
 export let emailBody: string;
+export let authToken: string;
 
 export function announcementCommand() {
 	const commands = [
@@ -26,6 +34,25 @@ export function announcementCommand() {
 	];
 	return commands;
 }
+
+async function getAuthenticatedAnnouncementCredentials() {
+	const session = await authentication.getSession('microsoft', [
+		'https://management.core.windows.net/.default',
+		'offline_access'
+	]);
+	if (session) {
+		authToken = session.accessToken;
+		output.appendLine(`Singed in as ${session.account.label}`);
+		const defaultEmailAddress = workspace.getConfiguration().get(defaultEmailAddressSetting);
+		if (defaultEmailAddress) {
+			primaryEmailAddress = defaultEmailAddress;
+			getEmailToList(true);
+		}
+	} else {
+		output.appendLine(`User is not signed in`);
+	}
+}
+
 // check for email address setting. if no address is present prompt for one
 // to-do: use vscode auth when available
 async function getAnnouncementCredentials() {
@@ -52,7 +79,7 @@ async function getAnnouncementCredentials() {
 	}
 }
 
-function getEmailToList() {
+function getEmailToList(authorized?: boolean) {
 	// get length of email address to set cursor position in input box
 	const emailLength = primaryEmailAddress.length;
 	// get additional email addresses
@@ -67,7 +94,11 @@ function getEmailToList() {
 		} else {
 			emailRecipients = val;
 		}
-		getPassword();
+		if (authorized) {
+			sendMailToken();
+		} else {
+			getPassword();
+		}
 	});
 }
 
@@ -170,6 +201,42 @@ function sendMail() {
 		],
 		html: emailBody
 	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function (error: any, info: any) {
+		if (error) {
+			return output.appendLine(error);
+		}
+		output.appendLine(`Message sent: ${info.response}`);
+	});
+}
+
+// send an authenticated
+function sendMailToken() {
+	const nodemailer = require('nodemailer');
+	const mailOptions = {
+		from: primaryEmailAddress, // sender address (who sends)
+		to: emailRecipients, // list of receivers (who receives)
+		subject: emailSubject, // Subject line
+		attachments: [
+			{
+				fileName: fileNameMailOption,
+				path: imagePath,
+				cid: source
+			}
+		],
+		html: emailBody
+	};
+	let transporter = nodemailer.createTransport({
+		host: 'smtp-mail.outlook.com',
+		port: 465,
+		secure: true,
+		auth: {
+			type: 'OAuth2',
+			user: primaryEmailAddress,
+			accessToken: authToken
+		}
+	});
 
 	// send mail with defined transport object
 	transporter.sendMail(mailOptions, function (error: any, info: any) {
